@@ -20,6 +20,7 @@ const DoughnutChart = () => {
 
   const [chartData, setChartData] = useState([]);
 
+  // Function to fetch the top coins data from Coingecko API
   const fetchTopCoins = () => {
     axios
       .get(
@@ -36,28 +37,25 @@ const DoughnutChart = () => {
       .catch((error) => console.log(error));
   };
 
+  // Call the fetchTopCoins function when the component mounts
   useEffect(() => {
     fetchTopCoins();
   }, []);
 
+  // Prepare the data for the Pie chart
   const data = {
-    // copy data from the state to a new array,
-    // sort it by current_price in ascending order,
-    // filter out 0, NaN and values below $100,
-    // take top 5 results using slice
-    // and then map
     labels: chartData
-      .sort((a, b) => a.current_price - b.current_price)
-      .filter((coin) => coin.current_price > 100)
-      .slice(0, 5)
-      .map((coin) => coin.name),
+      .sort((a, b) => a.current_price - b.current_price) // Sort the coins by current_price in ascending order
+      .filter((coin) => coin.current_price > 100) // Filter out coins with current_price below $100
+      .slice(0, 5) // Take the top 5 coins
+      .map((coin) => coin.name), // Map the coin names to labels
     datasets: [
       {
         data: chartData
-          .sort((a, b) => (a.current_price > b.current_price ? 1 : -1))
-          .filter((coin) => coin.current_price > 100)
-          .slice(0, 5)
-          .map((coin) => coin.current_price),
+          .sort((a, b) => (a.current_price > b.current_price ? 1 : -1)) // Sort the coins by current_price in ascending order
+          .filter((coin) => coin.current_price > 100) // Filter out coins with current_price below $100
+          .slice(0, 5) // Take the top 5 coins
+          .map((coin) => coin.current_price), // Map the coin current_prices to data
         backgroundColor: [
           theme.palette.customYellow.dark,
           theme.palette.error.dark,
@@ -71,6 +69,7 @@ const DoughnutChart = () => {
     ],
   };
 
+  // Configuration options for the Pie chart
   const options = {
     responsive: true,
     maintainAspectRatio: false,
