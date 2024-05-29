@@ -19,6 +19,7 @@ const CryptoByVolumePieChart = () => {
 
   const [chartData, setChartData] = useState([]);
 
+  // Function to fetch the top coins data from Coingecko API
   const fetchTopCoins = () => {
     axios
       .get(
@@ -35,25 +36,23 @@ const CryptoByVolumePieChart = () => {
       .catch((error) => console.log(error));
   };
 
+  // Call the fetchTopCoins function when the component mounts
   useEffect(() => {
     fetchTopCoins();
   }, []);
 
+  // Prepare the data for the Pie chart
   const data = {
-    // copy data from the state to a new array,
-    // sort it by total_volume in descending order,
-    // take top 3 results using slice
-    // and then map
     labels: chartData
-      .sort((a, b) => b.total_volume - a.total_volume)
-      .slice(0, 3)
-      .map((coin) => coin.name),
+      .sort((a, b) => b.total_volume - a.total_volume) // Sort the coins by total_volume in descending order
+      .slice(0, 3) // Take the top 3 coins
+      .map((coin) => coin.name), // Map the coin names to labels
     datasets: [
       {
         data: chartData
-          .sort((a, b) => b.total_volume - a.total_volume)
-          .slice(0, 3)
-          .map((coin) => coin.total_volume),
+          .sort((a, b) => b.total_volume - a.total_volume) // Sort the coins by total_volume in descending order
+          .slice(0, 3) // Take the top 3 coins
+          .map((coin) => coin.total_volume), // Map the coin total volumes to data
         backgroundColor: [
           theme.palette.primary.main,
           theme.palette.error.dark,
@@ -65,6 +64,7 @@ const CryptoByVolumePieChart = () => {
     ],
   };
 
+  // Configuration options for the Pie chart
   const options = {
     responsive: true,
     maintainAspectRatio: false,
