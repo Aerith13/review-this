@@ -20,6 +20,7 @@ const PolarAreaChart = () => {
 
   const [chartData, setChartData] = useState([]);
 
+  // Function to fetch the top coins data from Coingecko API
   const fetchTopCoins = () => {
     axios
       .get(
@@ -36,25 +37,23 @@ const PolarAreaChart = () => {
       .catch((error) => console.log(error));
   };
 
+  // Call the fetchTopCoins function when the component mounts
   useEffect(() => {
     fetchTopCoins();
   }, []);
 
+  // Prepare the data for the Polar Area chart
   const data = {
-    // copy data from the state to a new array,
-    // sort it by market_cap in descending order,
-    // take top 3 results using slice
-    // and then map
     labels: chartData
-      .sort((a, b) => b.market_cap - a.market_cap)
-      .slice(0, 3)
-      .map((coin) => coin.name),
+      .sort((a, b) => b.market_cap - a.market_cap) // Sort the coins by market_cap in descending order
+      .slice(0, 3) // Take the top 3 coins
+      .map((coin) => coin.name), // Map the coin names to labels
     datasets: [
       {
         data: chartData
-          .sort((a, b) => b.market_cap - a.market_cap)
-          .slice(0, 3)
-          .map((coin) => coin.market_cap),
+          .sort((a, b) => b.market_cap - a.market_cap) // Sort the coins by market_cap in descending order
+          .slice(0, 3) // Take the top 3 coins
+          .map((coin) => coin.market_cap), // Map the coin market_caps to data
         backgroundColor: [
           deepPurple[600],
           theme.palette.success.dark,
@@ -66,6 +65,7 @@ const PolarAreaChart = () => {
     ],
   };
 
+  // Configuration options for the Polar Area chart
   const options = {
     responsive: true,
     maintainAspectRatio: false,
@@ -115,11 +115,7 @@ const PolarAreaChart = () => {
       <Divider />
       <CardContent>
         <Box sx={{ height: 400, position: 'relative' }}>
-          <PolarArea
-            data={data}
-            options={options}
-            plugins={[ChartDataLabels]}
-          />
+          <PolarArea data={data} options={options} plugins={[ChartDataLabels]} />
         </Box>
       </CardContent>
     </Card>
