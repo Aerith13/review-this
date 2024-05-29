@@ -23,6 +23,7 @@ const LineChart = () => {
 
   const [chartData, setChartData] = useState([]);
 
+  // Function to fetch the top coins data from Coingecko API
   const fetchTopCoins = () => {
     axios
       .get(
@@ -39,27 +40,25 @@ const LineChart = () => {
       .catch((error) => console.log(error));
   };
 
+  // Call the fetchTopCoins function when the component mounts
   useEffect(() => {
     fetchTopCoins();
   }, []);
 
+  // Prepare the data for the Line chart
   const data = {
-    // copy data from the state to a new array,
-    // sort it by ath in descending order,
-    // take top 5 results using slice
-    // and then map
     labels: chartData
-      .sort((a, b) => b.atl - a.atl)
-      .slice(0, 5)
-      .map((coin) => coin.name),
+      .sort((a, b) => b.atl - a.atl) // Sort the coins by atl (all-time-low) in descending order
+      .slice(0, 5) // Take the top 5 coins
+      .map((coin) => coin.name), // Map the coin names to labels
     datasets: [
       {
         label: 'All-Time-Low',
         fontColor: colors.common.white,
         data: chartData
-          .sort((a, b) => b.atl - a.atl)
-          .slice(0, 5)
-          .map((coin) => coin.ath),
+          .sort((a, b) => b.atl - a.atl) // Sort the coins by atl (all-time-low) in descending order
+          .slice(0, 5) // Take the top 5 coins
+          .map((coin) => coin.ath), // Map the coin all-time-highs (ath) to data
         fill: false,
         borderColor: 'rgb(255, 99, 132)',
         pointBackgroundColor: 'rgb(255, 99, 132)',
@@ -68,6 +67,7 @@ const LineChart = () => {
     ],
   };
 
+  // Configuration options for the Line chart
   const options = {
     responsive: true,
     maintainAspectRatio: false,
